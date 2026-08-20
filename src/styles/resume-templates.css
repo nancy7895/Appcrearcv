@@ -1,0 +1,437 @@
+/* ==========================================================================
+   AuraCV - Resume Templates A4 Rendering Styles
+   ========================================================================== */
+
+/* Universal Template Base inside .resume-paper */
+.resume-paper {
+  color: #1e293b;
+  font-size: 9.5pt;
+  line-height: 1.45;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Density Settings */
+.resume-paper.density-compact {
+  font-size: 8.5pt;
+  line-height: 1.35;
+}
+.resume-paper.density-compact .tpl-section {
+  margin-bottom: 0.9rem;
+}
+
+.resume-paper.density-normal {
+  font-size: 9.5pt;
+  line-height: 1.45;
+}
+.resume-paper.density-normal .tpl-section {
+  margin-bottom: 1.25rem;
+}
+
+.resume-paper.density-spacious {
+  font-size: 10pt;
+  line-height: 1.55;
+}
+.resume-paper.density-spacious .tpl-section {
+  margin-bottom: 1.6rem;
+}
+
+/* ==========================================================================
+   1. Template: Modern Aura (tpl-modern-aura)
+   ========================================================================== */
+.tpl-modern-aura {
+  padding: 24mm 20mm;
+}
+
+.tpl-modern-aura .modern-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 2px solid var(--cv-accent, #6366f1);
+  margin-bottom: 1.2rem;
+}
+
+.tpl-modern-aura .modern-header-left {
+  flex: 1;
+}
+
+.tpl-modern-aura .modern-name {
+  font-size: 22pt;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+
+.tpl-modern-aura .modern-headline {
+  font-size: 11pt;
+  font-weight: 600;
+  color: var(--cv-accent, #6366f1);
+  margin-bottom: 8px;
+}
+
+.tpl-modern-aura .modern-contacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  font-size: 8.5pt;
+  color: #475569;
+}
+
+.tpl-modern-aura .modern-contact-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tpl-modern-aura .modern-avatar {
+  width: 76px;
+  height: 76px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 2px solid var(--cv-accent, #6366f1);
+}
+
+.tpl-modern-aura .modern-section-title {
+  font-size: 11pt;
+  font-weight: 700;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0.6rem;
+}
+
+.tpl-modern-aura .modern-section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e2e8f0;
+}
+
+.tpl-modern-aura .modern-item {
+  margin-bottom: 0.8rem;
+}
+
+.tpl-modern-aura .modern-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 2px;
+}
+
+.tpl-modern-aura .modern-item-title {
+  font-weight: 700;
+  font-size: 9.5pt;
+  color: #0f172a;
+}
+
+.tpl-modern-aura .modern-item-subtitle {
+  font-weight: 600;
+  color: #475569;
+  font-size: 9pt;
+}
+
+.tpl-modern-aura .modern-item-date {
+  font-size: 8.5pt;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.tpl-modern-aura .modern-bullets {
+  padding-left: 1rem;
+  margin-top: 4px;
+  color: #334155;
+}
+
+.tpl-modern-aura .modern-bullets li {
+  margin-bottom: 3px;
+}
+
+.tpl-modern-aura .modern-skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.tpl-modern-aura .modern-skill-pill {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: #1e293b;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 8pt;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   2. Template: Minimal Clean (tpl-minimal-clean)
+   ========================================================================== */
+.tpl-minimal-clean {
+  padding: 22mm 22mm;
+  font-family: 'Inter', sans-serif;
+}
+
+.tpl-minimal-clean .minimal-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #0f172a;
+}
+
+.tpl-minimal-clean .minimal-name {
+  font-size: 20pt;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  text-transform: uppercase;
+  color: #0f172a;
+}
+
+.tpl-minimal-clean .minimal-headline {
+  font-size: 10pt;
+  color: #475569;
+  margin-top: 2px;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.tpl-minimal-clean .minimal-contacts {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 8.5pt;
+  color: #334155;
+}
+
+.tpl-minimal-clean .minimal-section-title {
+  font-size: 10pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #0f172a;
+  border-bottom: 1px solid #cbd5e1;
+  padding-bottom: 3px;
+  margin-bottom: 0.6rem;
+}
+
+.tpl-minimal-clean .minimal-item {
+  margin-bottom: 0.75rem;
+}
+
+.tpl-minimal-clean .minimal-item-top {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+}
+
+.tpl-minimal-clean .minimal-item-sub {
+  display: flex;
+  justify-content: space-between;
+  color: #475569;
+  font-size: 8.5pt;
+  margin-bottom: 3px;
+}
+
+/* ==========================================================================
+   3. Template: Executive Slate (tpl-executive)
+   ========================================================================== */
+.tpl-executive {
+  padding: 0;
+}
+
+.tpl-executive .exec-top-bar {
+  background: #0f172a;
+  color: #ffffff;
+  padding: 20mm 20mm 15mm 20mm;
+}
+
+.tpl-executive .exec-name {
+  font-size: 22pt;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+}
+
+.tpl-executive .exec-headline {
+  font-size: 11pt;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-top: 4px;
+  margin-bottom: 10px;
+}
+
+.tpl-executive .exec-contacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  font-size: 8.5pt;
+  color: #cbd5e1;
+}
+
+.tpl-executive .exec-body {
+  padding: 16mm 20mm 20mm 20mm;
+}
+
+.tpl-executive .exec-section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 12pt;
+  font-weight: 700;
+  color: #0f172a;
+  border-bottom: 2px solid var(--cv-accent, #6366f1);
+  padding-bottom: 3px;
+  margin-bottom: 0.7rem;
+}
+
+/* ==========================================================================
+   4. Template: Tech Cyber (tpl-tech-cyber)
+   ========================================================================== */
+.tpl-tech-cyber {
+  padding: 20mm 18mm;
+  font-family: 'Inter', sans-serif;
+}
+
+.tpl-tech-cyber .tech-header {
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 16px 20px;
+  border-radius: 8px;
+  border-left: 5px solid var(--cv-accent, #06b6d4);
+  margin-bottom: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tpl-tech-cyber .tech-name {
+  font-family: 'Fira Code', monospace;
+  font-size: 18pt;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.tpl-tech-cyber .tech-headline {
+  font-family: 'Fira Code', monospace;
+  font-size: 9.5pt;
+  color: var(--cv-accent, #06b6d4);
+  margin-top: 2px;
+}
+
+.tpl-tech-cyber .tech-contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 8pt;
+  color: #94a3b8;
+  text-align: right;
+  font-family: 'Fira Code', monospace;
+}
+
+.tpl-tech-cyber .tech-section-title {
+  font-family: 'Fira Code', monospace;
+  font-size: 10.5pt;
+  font-weight: 700;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 0.6rem;
+}
+
+.tpl-tech-cyber .tech-section-title::before {
+  content: '>';
+  color: var(--cv-accent, #06b6d4);
+  font-weight: 900;
+}
+
+.tpl-tech-cyber .tech-tag {
+  font-family: 'Fira Code', monospace;
+  background: #e2e8f0;
+  color: #0f172a;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 7.5pt;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   5. Template: Split Sidebar (tpl-split-sidebar)
+   ========================================================================== */
+.tpl-split-sidebar {
+  display: grid;
+  grid-template-columns: 70mm 1fr;
+  min-height: 297mm;
+  padding: 0;
+}
+
+.tpl-split-sidebar .split-sidebar-left {
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 20mm 12mm;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.tpl-split-sidebar .split-avatar-box {
+  text-align: center;
+}
+
+.tpl-split-sidebar .split-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--cv-accent, #6366f1);
+  margin: 0 auto;
+}
+
+.tpl-split-sidebar .split-sidebar-title {
+  font-size: 9pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--cv-accent, #818cf8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.tpl-split-sidebar .split-main-right {
+  padding: 20mm 16mm;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.tpl-split-sidebar .split-name {
+  font-size: 22pt;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.1;
+}
+
+.tpl-split-sidebar .split-headline {
+  font-size: 11pt;
+  font-weight: 600;
+  color: var(--cv-accent, #6366f1);
+}
+
+.tpl-split-sidebar .split-main-title {
+  font-size: 11pt;
+  font-weight: 700;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1.5px solid #e2e8f0;
+  padding-bottom: 3px;
+  margin-bottom: 0.6rem;
+}

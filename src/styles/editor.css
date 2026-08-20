@@ -1,0 +1,650 @@
+/* ==========================================================================
+   AuraCV - Resume Editor View Styles
+   ========================================================================== */
+
+.editor-layout {
+  display: grid;
+  grid-template-columns: 500px 1fr;
+  height: calc(100vh - var(--header-height));
+  overflow: hidden;
+  background-color: var(--bg-primary);
+}
+
+@media (min-width: 1500px) {
+  .editor-layout {
+    grid-template-columns: 540px 1fr;
+  }
+}
+
+/* ==========================================================================
+   Left Panel: Form Builder & Controls
+   ========================================================================== */
+.editor-sidebar {
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  z-index: 10;
+}
+
+/* Form Top Header */
+.sidebar-header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card);
+}
+
+.cv-meta-title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.cv-name-input {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-primary);
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-family: inherit;
+  border-radius: var(--radius-xs);
+  padding: 3px 6px;
+  transition: all var(--transition-fast);
+  width: 92%;
+}
+
+.cv-name-input:hover {
+  border-color: var(--border-subtle);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.cv-name-input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  background: var(--bg-input);
+}
+
+.cv-status-badge {
+  font-size: 0.72rem;
+  color: var(--accent-emerald);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding-left: 6px;
+  font-weight: 600;
+}
+
+.cv-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-emerald);
+  box-shadow: 0 0 6px var(--accent-emerald);
+}
+
+.sidebar-header-actions {
+  display: flex;
+  gap: 6px;
+}
+
+/* Section Navigation Chips */
+.section-nav-wrapper {
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-secondary);
+  overflow-x: auto;
+  white-space: nowrap;
+  display: flex;
+  gap: 6px;
+}
+
+.section-nav-wrapper::-webkit-scrollbar {
+  height: 3px;
+}
+
+.section-pill {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all var(--transition-fast);
+  font-family: inherit;
+}
+
+.section-pill:hover {
+  color: var(--text-primary);
+  border-color: var(--border-medium);
+}
+
+.section-pill.active {
+  background: var(--accent-primary);
+  color: #fff;
+  border-color: var(--accent-primary);
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+/* Scrollable Form Content */
+.editor-form-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Form Section Accordion */
+.form-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: all var(--transition-normal);
+}
+
+.form-section:hover {
+  border-color: var(--border-medium);
+}
+
+.form-section-header {
+  padding: 0.85rem 1.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  background: rgba(255, 255, 255, 0.01);
+  transition: background var(--transition-fast);
+}
+
+.form-section-header:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.section-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.section-icon-box {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-xs);
+  background: rgba(99, 102, 241, 0.12);
+  color: var(--accent-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.section-title-text {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.section-subtitle-text {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.section-chevron {
+  color: var(--text-muted);
+  transition: transform var(--transition-fast);
+}
+
+.form-section.collapsed .section-chevron {
+  transform: rotate(-90deg);
+}
+
+.form-section.collapsed .form-section-body {
+  display: none;
+}
+
+.form-section-body {
+  padding: 1.15rem;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+/* Form Controls & Inputs */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.form-row-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.form-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-label-tip {
+  font-weight: 400;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+}
+
+.form-input, .form-textarea, .form-select {
+  width: 100%;
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xs);
+  padding: 0.6rem 0.8rem;
+  color: var(--text-primary);
+  font-size: 0.86rem;
+  font-family: inherit;
+  transition: all var(--transition-fast);
+}
+
+.form-input:hover, .form-textarea:hover, .form-select:hover {
+  border-color: var(--border-medium);
+}
+
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  background: var(--bg-input-focus);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.form-textarea {
+  min-height: 80px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+/* Avatar Upload Component */
+.avatar-upload-box {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--border-medium);
+}
+
+.avatar-preview {
+  width: 58px;
+  height: 58px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-subtle);
+}
+
+.avatar-placeholder {
+  width: 58px;
+  height: 58px;
+  border-radius: var(--radius-sm);
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--accent-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-upload-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Dynamic Item Cards (Experience, Education, Projects) */
+.dynamic-items-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.dynamic-item-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.9rem;
+  position: relative;
+  transition: all var(--transition-fast);
+}
+
+.dynamic-item-card:hover {
+  border-color: var(--border-medium);
+}
+
+.dynamic-item-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.dynamic-item-title {
+  font-weight: 700;
+  font-size: 0.86rem;
+  color: var(--text-primary);
+}
+
+.dynamic-item-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.btn-item-action {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--radius-xs);
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-item-action:hover {
+  color: var(--text-primary);
+  background: var(--bg-tertiary);
+}
+
+.btn-item-action.delete:hover {
+  color: var(--accent-rose);
+  background: rgba(244, 63, 94, 0.1);
+}
+
+.btn-add-item {
+  width: 100%;
+  padding: 0.6rem;
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px dashed var(--accent-primary);
+  border-radius: var(--radius-sm);
+  color: var(--accent-primary);
+  font-weight: 600;
+  font-size: 0.84rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all var(--transition-fast);
+  margin-top: 0.35rem;
+  font-family: inherit;
+}
+
+.btn-add-item:hover {
+  background: rgba(99, 102, 241, 0.16);
+  transform: translateY(-1px);
+}
+
+/* Skills Tag Inputs */
+.skills-tags-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 0.35rem;
+}
+
+.skill-tag {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.skill-tag-remove {
+  cursor: pointer;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+}
+
+.skill-tag-remove:hover {
+  color: var(--accent-rose);
+}
+
+/* AI Assistant Trigger Button */
+.btn-ai-assist {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(236, 72, 153, 0.15) 100%);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  color: var(--text-primary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all var(--transition-fast);
+}
+
+.btn-ai-assist:hover {
+  border-color: var(--accent-primary);
+  background: var(--accent-gradient);
+  color: #ffffff;
+}
+
+/* ATS Meter Card */
+.ats-meter-card {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.8) 100%);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ats-meter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ats-meter-title {
+  font-size: 0.84rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ats-score-pill {
+  font-weight: 800;
+  font-size: 0.85rem;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.ats-score-pill.high {
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--accent-emerald);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.ats-score-pill.medium {
+  background: rgba(245, 158, 11, 0.2);
+  color: var(--accent-amber);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.ats-score-pill.low {
+  background: rgba(244, 63, 94, 0.2);
+  color: var(--accent-rose);
+  border: 1px solid rgba(244, 63, 94, 0.4);
+}
+
+.ats-progress-bar {
+  height: 6px;
+  background: var(--bg-input);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.ats-progress-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.4s ease;
+}
+
+.ats-tips-list {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ==========================================================================
+   Right Panel: Live Resume Preview Canvas
+   ========================================================================== */
+.editor-preview-container {
+  background: var(--bg-primary);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Top Floating Canvas Toolbar */
+.canvas-toolbar {
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: var(--shadow-lg);
+  max-width: 95%;
+  flex-wrap: wrap;
+}
+
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.toolbar-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border-subtle);
+}
+
+.color-picker-dots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.color-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform var(--transition-fast);
+}
+
+.color-dot:hover {
+  transform: scale(1.18);
+}
+
+.color-dot.active {
+  border-color: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+/* Canvas Viewport */
+.canvas-viewport {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 4.8rem 2rem 3rem 2rem;
+  background: radial-gradient(circle at center, rgba(99, 102, 241, 0.04) 0%, transparent 70%);
+}
+
+/* A4 Sheet Dimensions */
+.resume-paper-wrapper {
+  transform-origin: top center;
+  transition: transform var(--transition-fast);
+  margin-bottom: 3rem;
+}
+
+.resume-paper {
+  width: 210mm;
+  min-height: 297mm;
+  background: #ffffff;
+  color: #1e293b;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.45);
+  border-radius: 2px;
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Responsive Scaling */
+@media (max-width: 1024px) {
+  .editor-layout {
+    grid-template-columns: 1fr;
+    height: auto;
+    overflow-y: auto;
+  }
+  .editor-sidebar {
+    height: 650px;
+  }
+  .editor-preview-container {
+    height: 800px;
+  }
+}

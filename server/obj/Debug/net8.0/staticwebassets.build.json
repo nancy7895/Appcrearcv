@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "lddMGxc+bnA4aTtt+Xr6VPdQ0ry26quTboyR38IqrMg=",
+  "Source": "AppCv.Server",
+  "BasePath": "_content/AppCv.Server",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

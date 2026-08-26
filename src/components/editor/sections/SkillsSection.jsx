@@ -1,3 +1,7 @@
+// =============================================================================
+// SECCIÓN: HABILIDADES & TECNOLOGÍAS (SkillsSection.jsx)
+// =============================================================================
+
 import React, { useState } from 'react'
 import { Wrench, ChevronDown, Plus, X, Sparkles } from 'lucide-react'
 import { useResume } from '../../../context/ResumeContext'
@@ -43,81 +47,102 @@ export default function SkillsSection({ isOpen, onToggle }) {
 
   return (
     <div id="section-skills" className={`form-section ${!isOpen ? 'collapsed' : ''}`}>
+      {/* Cabecera del acordeón */}
       <div className="form-section-header" onClick={onToggle}>
         <div className="section-title-group">
           <div className="section-icon-box">
-            <Wrench size={16} />
+            <Wrench size={18} />
           </div>
           <div>
             <h3 className="section-title-text">Habilidades & Tecnologías</h3>
-            <p className="section-subtitle-text">{skills.length} habilidad(es) registradas</p>
+            <p className="section-subtitle-text">{skills.length} habilidad(es) registrada(s)</p>
           </div>
         </div>
-        <ChevronDown size={18} className="section-chevron" />
+        <div className="section-header-meta">
+          <span className="section-count-badge">{skills.length}</span>
+          <ChevronDown size={18} className="section-chevron" />
+        </div>
       </div>
 
-      <div className="form-section-body">
-        {/* Input Add */}
-        <div className="form-row" style={{ gridTemplateColumns: '1fr auto' }}>
-          <input
-            type="text"
-            className="form-input"
-            value={newSkillText}
-            onChange={(e) => setNewSkillText(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Escribe una habilidad y pulsa Enter (ej. React, Docker...)"
-          />
-          <button type="button" className="btn btn-primary" onClick={() => handleAddSkill()}>
-            <Plus size={16} /> Añadir
-          </button>
-        </div>
-
-        {/* Current Skills Tags */}
-        <div className="skills-tags-wrapper">
-          {skills.map(s => (
-            <div key={s.id} className="skill-tag">
-              <span>{s.name}</span>
-              <span
-                className="skill-tag-remove"
-                onClick={() => handleRemoveSkill(s.id)}
-                title="Eliminar habilidad"
+      {/* Contenedor con animación fluida CSS Grid */}
+      <div className="form-section-content">
+        <div className="form-section-body-wrapper">
+          <div className="form-section-body">
+            {/* Input Add */}
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <input
+                type="text"
+                className="form-input"
+                value={newSkillText}
+                onChange={(e) => setNewSkillText(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Escribe una habilidad y pulsa Enter (ej. React, Docker...)"
+                style={{ flex: 1 }}
+              />
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => handleAddSkill()}
+                style={{ flexShrink: 0, padding: '0 1.1rem' }}
               >
-                <X size={13} />
-              </span>
+                <Plus size={16} /> Añadir
+              </button>
             </div>
-          ))}
-          {skills.length === 0 && (
-            <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>No has añadido habilidades aún.</p>
-          )}
-        </div>
 
-        {/* Quick Suggestions */}
-        <div style={{ marginTop: '0.8rem' }}>
-          <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '6px' }}>
-            <Sparkles size={12} style={{ color: 'var(--accent-primary)' }} /> Sugerencias populares de un clic:
-          </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
-            {popularSuggestions
-              .filter(p => !skills.some(s => s.name.toLowerCase() === p.toLowerCase()))
-              .slice(0, 10)
-              .map(item => (
-                <button
-                  key={item}
-                  type="button"
-                  onClick={() => handleAddSkill(item)}
-                  style={{
-                    background: 'rgba(99, 102, 241, 0.08)',
-                    border: '1px solid rgba(99, 102, 241, 0.2)',
-                    color: 'var(--text-primary)',
-                    borderRadius: 'var(--radius-xs)',
-                    padding: '3px 8px',
-                    fontSize: '0.72rem',
-                    cursor: 'pointer'
-                  }}
-                >
-                  + {item}
-                </button>
-              ))}
+            {/* Current Skills Tags */}
+            <div>
+              <div className="skills-tags-wrapper">
+                {skills.map(s => (
+                  <div key={s.id} className="skill-tag">
+                    <span>{s.name}</span>
+                    <span
+                      className="skill-tag-remove"
+                      onClick={() => handleRemoveSkill(s.id)}
+                      title="Eliminar habilidad"
+                    >
+                      <X size={14} />
+                    </span>
+                  </div>
+                ))}
+              </div>
+              {skills.length === 0 && (
+                <p style={{ fontSize: '0.84rem', color: 'var(--text-muted)', marginTop: '0.4rem' }}>
+                  No has añadido habilidades aún. Escribe arriba o selecciona una de las sugerencias rápidas.
+                </p>
+              )}
+            </div>
+
+            {/* Quick Suggestions */}
+            <div style={{ marginTop: '0.4rem', borderTop: '1px solid var(--border-subtle)', paddingTop: '0.8rem' }}>
+              <div style={{ fontSize: '0.78rem', fontWeight: '700', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '8px' }}>
+                <Sparkles size={13} style={{ color: 'var(--accent-primary)' }} /> Sugerencias populares de un clic:
+              </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                {popularSuggestions
+                  .filter(p => !skills.some(s => s.name.toLowerCase() === p.toLowerCase()))
+                  .slice(0, 12)
+                  .map(item => (
+                    <button
+                      key={item}
+                      type="button"
+                      onClick={() => handleAddSkill(item)}
+                      style={{
+                        background: 'rgba(99, 102, 241, 0.08)',
+                        border: '1px solid rgba(99, 102, 241, 0.22)',
+                        color: 'var(--text-primary)',
+                        borderRadius: 'var(--radius-xs)',
+                        padding: '4px 10px',
+                        fontSize: '0.75rem',
+                        fontWeight: '500',
+                        cursor: 'pointer',
+                        transition: 'all 0.15s ease'
+                      }}
+                    >
+                      + {item}
+                    </button>
+                  ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>

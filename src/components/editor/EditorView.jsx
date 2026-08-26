@@ -8,6 +8,7 @@
 //    para descargar el PDF, cambiar colores y hacer zoom.
 
 import React, { useState, useRef } from 'react'
+import { ChevronsDown, ChevronsUp } from 'lucide-react'
 
 // Sub-componentes del editor:
 import SidebarHeader from './SidebarHeader'
@@ -27,9 +28,6 @@ import CertificationsSection from './sections/CertificationsSection'
 import CustomSection from './sections/CustomSection'
 
 export default function EditorView() {
-  // `useRef`: Es como una "etiqueta o puntero directo" hacia el elemento HTML de la hoja.
-  // Lo necesitamos para que la biblioteca jsPDF/html2canvas sepa exactamente qué parte
-  // de la pantalla debe capturar y convertir a archivo PDF.
   const printRef = useRef(null)
 
   // 'activeSection': Guarda qué pestaña de navegación rápida está seleccionada
@@ -51,8 +49,36 @@ export default function EditorView() {
   const toggleSection = (sectionKey) => {
     setOpenSections(prev => ({
       ...prev,
-      [sectionKey]: !prev[sectionKey] // Invierte el valor (de abierto a cerrado o viceversa)
+      [sectionKey]: !prev[sectionKey]
     }))
+  }
+
+  // Expandir todas las secciones
+  const expandAll = () => {
+    setOpenSections({
+      personal: true,
+      experience: true,
+      education: true,
+      skills: true,
+      projects: true,
+      languages: true,
+      certifications: true,
+      custom: true
+    })
+  }
+
+  // Plegar todas las secciones
+  const collapseAll = () => {
+    setOpenSections({
+      personal: false,
+      experience: false,
+      education: false,
+      skills: false,
+      projects: false,
+      languages: false,
+      certifications: false,
+      custom: false
+    })
   }
 
   return (
@@ -75,12 +101,35 @@ export default function EditorView() {
 
         {/* Lista desplegable con todas las secciones de información */}
         <div className="editor-form-scroll">
-          {/* Medidor en tiempo real de puntuación ATS (optimización para reclutadores) */}
+          {/* Medidor en tiempo real de puntuación ATS */}
           <AtsScoreMeter />
 
-          {/* Cada una de estas secciones recibe "props" (parámetros):
-              - isOpen: si la tarjeta está desplegada
-              - onToggle: qué función ejecutar cuando el usuario hace clic en el título */}
+          {/* Barra de control rápido de acordeones */}
+          <div className="accordion-controls-bar">
+            <span className="accordion-status-label">Secciones del Currículum</span>
+            <div className="accordion-toggle-btns">
+              <button
+                type="button"
+                className="btn-accordion-control"
+                onClick={expandAll}
+                title="Desplegar todos los acordeones"
+              >
+                <ChevronsDown size={13} />
+                <span>Expandir</span>
+              </button>
+              <button
+                type="button"
+                className="btn-accordion-control"
+                onClick={collapseAll}
+                title="Plegar todos los acordeones"
+              >
+                <ChevronsUp size={13} />
+                <span>Plegar</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Secciones individuales */}
           <PersonalInfoSection
             isOpen={openSections.personal}
             onToggle={() => toggleSection('personal')}
@@ -138,4 +187,3 @@ export default function EditorView() {
     </div>
   )
 }
-

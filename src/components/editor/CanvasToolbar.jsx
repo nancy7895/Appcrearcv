@@ -69,39 +69,102 @@ export default function CanvasToolbar({ printRef }) {
     setIsExporting(true)
     addToast('Generando documento PDF A4 de alta fidelidad...', 'info')
 
+    let container = null
     try {
-      // Importamos las librerías dinámicamente cuando el usuario hace clic
+      // 1. Asegurar que las fuentes tipográficas estén 100% cargadas en el navegador
+      if (document.fonts && document.fonts.ready) {
+        await document.fonts.ready
+      }
+
+      // 2. Importar librerías dinámicamente
       const html2canvasModule = await import('html2canvas')
       const html2canvas = html2canvasModule.default || html2canvasModule
       const { jsPDF } = await import('jspdf')
 
-      const element = printRef.current
-      const canvas = await html2canvas(element, {
-        scale: 2.5, // 2.5x para asegurar nitidez ultra clara en texto
+      const originalElement = printRef.current
+
+      // 3. Crear un contenedor aislado fuera de pantalla SIN transform: scale(...)
+      // Esto elimina por completo el bug de texto encimado/desfasado provocado por el zoom CSS
+      container = document.createElement('div')
+      container.style.position = 'fixed'
+      container.style.left = '-99999px'
+      container.style.top = '0'
+      container.style.width = '794px' // Ancho exacto A4 (210mm a 96 DPI)
+      container.style.zIndex = '-9999'
+      container.style.margin = '0'
+      container.style.padding = '0'
+      container.style.transform = 'none'
+      container.style.backgroundColor = '#ffffff'
+
+      const clone = originalElement.cloneNode(true)
+      clone.style.transform = 'none'
+      clone.style.margin = '0'
+      clone.style.boxShadow = 'none'
+      clone.style.width = '794px'
+      clone.style.minHeight = '1123px' // Alto proporcional A4 (297mm)
+
+      container.appendChild(clone)
+      document.body.appendChild(container)
+
+      // Pequeña pausa para asegurar el renderizado del DOM en el contenedor clonado
+      await new Promise(resolve => setTimeout(resolve, 120))
+
+      // 4. Capturar el elemento clonado a escala 3x (300 DPI - calidad imprenta profesional)
+      const canvas = await html2canvas(clone, {
+        scale: 3,
         useCORS: true,
+        allowTaint: true,
         logging: false,
-        backgroundColor: '#ffffff'
+        backgroundColor: '#ffffff',
+        width: 794,
+        windowWidth: 794,
+        scrollX: 0,
+        scrollY: 0
       })
 
       const imgData = canvas.toDataURL('image/jpeg', 0.98)
+      
+      // 5. Generar PDF A4 estándar
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
         format: 'a4'
       })
 
-      const pdfWidth = 210 // Ancho estándar A4 en milímetros
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width
-      pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, Math.min(pdfHeight, 297))
+      const pdfPageWidth = 210 // mm
+      const pdfPageHeight = 297 // mm
+      const totalPdfHeight = (canvas.height * pdfPageWidth) / canvas.width
+
+      // Si cabe en una hoja estándar (o margen mínimo)
+      if (totalPdfHeight <= pdfPageHeight + 4) {
+        pdf.addImage(imgData, 'JPEG', 0, 0, pdfPageWidth, Math.min(totalPdfHeight, pdfPageHeight), undefined, 'FAST')
+      } else {
+        // Soporte multi-página: Si el contenido sobrepasa 1 hoja A4, divide limpiamente
+        let heightLeft = totalPdfHeight
+        let position = 0
+
+        pdf.addImage(imgData, 'JPEG', 0, position, pdfPageWidth, totalPdfHeight, undefined, 'FAST')
+        heightLeft -= pdfPageHeight
+
+        while (heightLeft > 0) {
+          position = -(totalPdfHeight - heightLeft)
+          pdf.addPage()
+          pdf.addImage(imgData, 'JPEG', 0, position, pdfPageWidth, totalPdfHeight, undefined, 'FAST')
+          heightLeft -= pdfPageHeight
+        }
+      }
 
       const filename = `${(activeResume.personalInfo.fullName || 'Curriculum').replace(/\s+/g, '_')}_AuraCV.pdf`
       pdf.save(filename)
-      addToast('¡PDF descargado con éxito!', 'success')
+      addToast('¡PDF descargado con éxito y perfectamente alineado!', 'success')
     } catch (err) {
       console.error('Error generando PDF:', err)
       addToast('Abriendo ventana de impresión para guardar PDF...', 'info')
       window.print()
     } finally {
+      if (container && container.parentNode) {
+        container.parentNode.removeChild(container)
+      }
       setIsExporting(false)
     }
   }

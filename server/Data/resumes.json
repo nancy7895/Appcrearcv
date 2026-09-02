@@ -1,0 +1,177 @@
+[
+  {
+    "id": "f8390c39-9cd3-48e5-bcd2-3d2c5ad590c9",
+    "title": "Mi curriculum",
+    "lastModified": "2026-09-02T03:32:50.7952730Z",
+    "templateId": "modern-aura",
+    "accentColor": "#6366f1",
+    "fontFamily": "Plus Jakarta Sans",
+    "density": "normal",
+    "personalInfo": {
+      "fullName": "Nidwindjjs",
+      "headline": "",
+      "email": "Isa 247bella",
+      "phone": "",
+      "location": "",
+      "website": "",
+      "linkedin": "",
+      "github": "",
+      "avatar": "",
+      "summary": ""
+    },
+    "experience": [],
+    "education": [],
+    "skills": [],
+    "languages": [],
+    "projects": [],
+    "certifications": []
+  },
+  {
+    "id": "cv-1787879718794",
+    "title": "Nuevo Curr\u00EDculum",
+    "lastModified": "2026-09-02T03:29:48.2220700Z",
+    "templateId": "modern-aura",
+    "accentColor": "#06b6d4",
+    "fontFamily": "Fira Code",
+    "density": "normal",
+    "personalInfo": {
+      "fullName": "Nancy Isabella Sanches",
+      "headline": "Tu Puesto o Especialidad",
+      "email": "alex.vance@example.dev",
+      "phone": "\u002B34 612 345 678",
+      "location": "Mexico/Cancun QuintanaRoo",
+      "website": "https://alexvance.dev",
+      "linkedin": "linkedin.com/in/alexvance-dev",
+      "github": "github.com/alexvance",
+      "avatar": "",
+      "summary": "Especialista apasionado con s\u00F3lida trayectoria en Tu Puesto o Especialidad. Experiencia demostrada en la consecuci\u00F3n de objetivos estrat\u00E9gicos, liderazgo colaborativo y aplicaci\u00F3n de metodolog\u00EDas \u00E1giles para maximizar el valor del negocio."
+    },
+    "experience": [
+      {
+        "id": "exp-1",
+        "role": "Senior Staff Engineer",
+        "company": "TechFlow Systems",
+        "location": "Madrid / Remoto",
+        "startDate": "2022-01",
+        "endDate": "",
+        "current": true,
+        "description": "\u2022 Lider\u00E9 la migraci\u00F3n de la arquitectura monol\u00EDtica a microservicios en Kubernetes, reduciendo los tiempos de despliegue en un 65%.\n\u2022 Dise\u00F1\u00E9 APIs GraphQL y REST de alto rendimiento que procesan m\u00E1s de 40M de peticiones diarias con un SLA del 99.99%.\n\u2022 Mentor\u00E9 a un equipo de 8 ingenieros de software, implementando pruebas automatizadas que aumentaron la cobertura del c\u00F3digo al 92%."
+      },
+      {
+        "id": "exp-2",
+        "role": "Full Stack Engineer",
+        "company": "Innovate Labs",
+        "location": "Barcelona, Espa\u00F1a",
+        "startDate": "2019-03",
+        "endDate": "2021-12",
+        "current": false,
+        "description": "\u2022 Desarroll\u00E9 dashboards interactivos en tiempo real con React, TypeScript y TailwindCSS, mejorando el engagement de usuario en un 40%.\n\u2022 Optimic\u00E9 consultas PostgreSQL y pipelines de cach\u00E9 Redis, reduciendo los tiempos de respuesta del servidor en 250ms."
+      }
+    ],
+    "education": [
+      {
+        "id": "edu-1",
+        "degree": "Grado en Ingenier\u00EDa Inform\u00E1tica",
+        "institution": "Universidad Polit\u00E9cnica de Madrid",
+        "location": "Madrid, Espa\u00F1a",
+        "startDate": "2014-09",
+        "endDate": "2018-06",
+        "honors": "Matr\u00EDcula de Honor en Proyecto Fin de Carrera"
+      }
+    ],
+    "skills": [
+      {
+        "id": "sk-1",
+        "name": "React / Next.js",
+        "category": "frontend",
+        "level": "Experto"
+      },
+      {
+        "id": "sk-2",
+        "name": "TypeScript / Node.js",
+        "category": "backend",
+        "level": "Experto"
+      },
+      {
+        "id": "sk-3",
+        "name": "Python / FastApi",
+        "category": "backend",
+        "level": "Avanzado"
+      },
+      {
+        "id": "sk-4",
+        "name": "Docker / Kubernetes",
+        "category": "devops",
+        "level": "Avanzado"
+      },
+      {
+        "id": "sk-5",
+        "name": "AWS \u0026 Cloud Architecture",
+        "category": "cloud",
+        "level": "Avanzado"
+      },
+      {
+        "id": "sk-6",
+        "name": "PostgreSQL \u0026 Redis",
+        "category": "database",
+        "level": "Avanzado"
+      },
+      {
+        "id": "sk-7",
+        "name": "CI/CD Pipelines",
+        "category": "devops",
+        "level": "Avanzado"
+      },
+      {
+        "id": "sk-8",
+        "name": "System Design",
+        "category": "architecture",
+        "level": "Experto"
+      }
+    ],
+    "languages": [
+      {
+        "id": "lang-1",
+        "language": "Espa\u00F1ol",
+        "level": "Nativo"
+      },
+      {
+        "id": "lang-2",
+        "language": "Ingl\u00E9s",
+        "level": "C1 Profesional"
+      }
+    ],
+    "projects": [
+      {
+        "id": "prj-1",
+        "name": "AuraCloud Engine",
+        "role": "Creador \u0026 Arquitecto",
+        "link": "https://auracloud.dev",
+        "techStack": "Go, React, Redis, Docker",
+        "description": "Plataforma de despliegue automatizado open-source con soporte de orquestaci\u00F3n ligera y monitoreo en tiempo real."
+      },
+      {
+        "id": "prj-2",
+        "name": "DataPulse Analytics",
+        "role": "Lead Developer",
+        "link": "https://github.com/alexvance/datapulse",
+        "techStack": "TypeScript, Next.js, ClickHouse",
+        "description": "Dashboard de an\u00E1lisis de m\u00E9tricas en tiempo real con capacidad para renderizar visualizaciones de millones de eventos."
+      }
+    ],
+    "certifications": [
+      {
+        "id": "cert-1",
+        "name": "AWS Certified Solutions Architect \u2013 Professional",
+        "issuer": "Amazon Web Services",
+        "date": "2023"
+      },
+      {
+        "id": "cert-2",
+        "name": "Certified Kubernetes Administrator (CKA)",
+        "issuer": "Cloud Native Computing Foundation",
+        "date": "2022"
+      }
+    ]
+  }
+]

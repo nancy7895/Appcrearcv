@@ -16,6 +16,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { defaultResumeData, sampleProfiles } from '../data/initialData'
+import { getResumesFromApi, saveResumeToApi, deleteResumeFromApi } from '../Services/resumeApi'
 
 // 1. Creamos la caja del Contexto
 const ResumeContext = createContext()
@@ -58,10 +59,22 @@ export function ResumeProvider({ children }) {
   const [toasts, setToasts] = useState([])
 
   // ---------------------------------------------------------------------------
-  // EFECTOS (Guardado automático en LocalStorage)
+  // EFECTOS (Sincronización con Backend C# y LocalStorage)
   // ---------------------------------------------------------------------------
 
-  // Cada vez que 'resumes' cambia (el usuario escribe algo), lo guardamos en la memoria del navegador
+  // 1. Cargar currículums desde el backend en C# al iniciar la aplicación
+  useEffect(() => {
+    async function loadFromBackend() {
+      const serverResumes = await getResumesFromApi()
+      if (serverResumes && Array.isArray(serverResumes) && serverResumes.length > 0) {
+        setResumes(serverResumes)
+        setActiveResumeId(serverResumes[0].id)
+      }
+    }
+    loadFromBackend()
+  }, [])
+
+  // 2. Guardado automático en LocalStorage
   useEffect(() => {
     try {
       localStorage.setItem('auracv_resumes', JSON.stringify(resumes))
@@ -70,13 +83,20 @@ export function ResumeProvider({ children }) {
     }
   }, [resumes])
 
-  // Guarda en memoria cuál fue el último CV que estuviste editando
+  // 3. Guarda en memoria cuál fue el último CV que estuviste editando
   useEffect(() => {
     localStorage.setItem('auracv_active_id', activeResumeId)
   }, [activeResumeId])
 
   // Obtenemos el objeto del CV actual que está siendo editado
   const activeResume = resumes.find(r => r.id === activeResumeId) || resumes[0] || defaultResumeData
+
+  // 4. Cada vez que el CV activo cambia, lo guardamos en segundo plano en el Backend C#
+  useEffect(() => {
+    if (activeResume) {
+      saveResumeToApi(activeResume)
+    }
+  }, [activeResume])
 
   // ---------------------------------------------------------------------------
   // FUNCIONES AUXILIARES Y ACCIONES
@@ -150,6 +170,9 @@ export function ResumeProvider({ children }) {
       addToast('No puedes eliminar el único currículum disponible', 'info')
       return
     }
+    // Borramos también en el backend C#
+    deleteResumeFromApi(id)
+
     setResumes(prev => prev.filter(r => r.id !== id))
     if (activeResumeId === id) {
       const remaining = resumes.filter(r => r.id !== id)

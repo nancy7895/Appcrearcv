@@ -9,9 +9,10 @@
 // 5. Botones de acción: Descargar PDF A4, Imprimir, Exportar/Importar copia en JSON.
 
 import React, { useState } from 'react'
-import { ZoomIn, ZoomOut, Maximize2, Download, Printer, FileJson, Upload, Palette, Type, Layout } from 'lucide-react'
+import { ZoomIn, ZoomOut, Maximize2, Download, Printer, FileJson, Upload, Type, Layout } from 'lucide-react'
 import { useResume } from '../../context/ResumeContext'
-import { COLOR_PALETTES, FONT_OPTIONS, DENSITY_OPTIONS } from '../../data/templateDefinitions'
+import { FONT_OPTIONS, DENSITY_OPTIONS } from '../../data/templateDefinitions'
+import ColorPickerControl from './ColorPickerControl'
 
 export default function CanvasToolbar({ printRef }) {
   // Extraemos funciones y variables del almacén central (ResumeContext)
@@ -33,12 +34,6 @@ export default function CanvasToolbar({ printRef }) {
   // Restablecer zoom al 85% estándar
   const handleZoomReset = () => {
     setZoomScale(0.85)
-  }
-
-  // Cambiar el color de acento del CV
-  const handleColorChange = (color) => {
-    updateActiveResume({ accentColor: color })
-    addToast('Color de acento actualizado', 'info')
   }
 
   // Cambiar la fuente tipográfica
@@ -197,19 +192,9 @@ export default function CanvasToolbar({ printRef }) {
 
       <div className="toolbar-divider" />
 
-      {/* 2. Selector de Color de Acento */}
+      {/* 2. Selector de Color de Acento Extendido y Personalizado (HEX) */}
       <div className="toolbar-group">
-        <div className="color-picker-dots">
-          {COLOR_PALETTES.map(p => (
-            <button
-              key={p.value}
-              className={`color-dot ${activeResume.accentColor === p.value ? 'active' : ''}`}
-              style={{ backgroundColor: p.value }}
-              onClick={() => handleColorChange(p.value)}
-              title={p.name}
-            />
-          ))}
-        </div>
+        <ColorPickerControl />
       </div>
 
       <div className="toolbar-divider" />

@@ -484,6 +484,89 @@
   min-width: 0;
 }
 
+/* Control de Tamaño de Foto de Perfil */
+.avatar-size-control-box {
+  margin-top: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.avatar-size-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.avatar-size-label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.avatar-size-value {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  background: var(--bg-input);
+  padding: 1px 6px;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-subtle);
+}
+
+.avatar-size-controls-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar-size-presets {
+  display: flex;
+  gap: 4px;
+}
+
+.btn-avatar-size-chip {
+  background: var(--bg-input);
+  border: 1px solid var(--border-medium);
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-avatar-size-chip:hover {
+  color: var(--text-primary);
+  border-color: var(--accent-primary);
+}
+
+.btn-avatar-size-chip.active {
+  background: var(--accent-primary);
+  color: #ffffff;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.3);
+}
+
+.avatar-size-slider {
+  flex: 1;
+  height: 5px;
+  border-radius: 5px;
+  background: var(--bg-input);
+  outline: none;
+  cursor: pointer;
+  accent-color: var(--accent-primary);
+}
+
 /* ==========================================================================
    Dynamic Item Cards (Experience, Education, Projects, etc.)
    ========================================================================== */

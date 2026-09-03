@@ -101,12 +101,13 @@
 }
 
 .tpl-modern-aura .modern-avatar {
-  width: 76px;
-  height: 76px;
+  width: var(--cv-avatar-size, 76px);
+  height: var(--cv-avatar-size, 76px);
   border-radius: 12px;
   object-fit: cover;
   border: 2px solid var(--cv-accent, #6366f1);
   flex-shrink: 0;
+  transition: width 0.15s ease, height 0.15s ease;
 }
 
 .tpl-modern-aura .modern-section-title {
@@ -439,12 +440,13 @@
 }
 
 .tpl-split-sidebar .split-avatar {
-  width: 86px;
-  height: 86px;
+  width: var(--cv-avatar-size, 86px);
+  height: var(--cv-avatar-size, 86px);
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid var(--cv-accent, #6366f1);
   margin: 0 auto;
+  transition: width 0.15s ease, height 0.15s ease;
 }
 
 .tpl-split-sidebar .split-sidebar-title {

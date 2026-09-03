@@ -67,7 +67,8 @@ export default function ResumeCanvas({ printRef, customData = null, customScale 
         className={`resume-paper density-${data.density || 'normal'}`}
         style={{
           fontFamily: fontFamilyStyle,
-          '--cv-accent': data.accentColor || '#6366f1' // Variable CSS para el color de acento
+          '--cv-accent': data.accentColor || '#6366f1', // Variable CSS para el color de acento
+          '--cv-avatar-size': `${data.personalInfo?.avatarSize || 80}px`
         }}
       >
         {/* Aquí se dibuja la plantilla seleccionada */}

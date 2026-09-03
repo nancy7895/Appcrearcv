@@ -3,7 +3,7 @@
 // =============================================================================
 
 import React from 'react'
-import { User, ChevronDown, Camera, Sparkles, Upload } from 'lucide-react'
+import { User, ChevronDown, Camera, Sparkles, Upload, Maximize2 } from 'lucide-react'
 import { useResume } from '../../../context/ResumeContext'
 
 export default function PersonalInfoSection({ isOpen, onToggle }) {
@@ -97,6 +97,59 @@ export default function PersonalInfoSection({ isOpen, onToggle }) {
                 </div>
               </div>
             </div>
+
+            {/* Control para cambiar el tamaño de la foto (solo visible si hay foto) */}
+            {personalInfo.avatar && (
+              <div className="avatar-size-control-box">
+                <div className="avatar-size-header">
+                  <span className="avatar-size-label">
+                    <Maximize2 size={13} style={{ color: 'var(--accent-primary)' }} />
+                    Tamaño de la foto en el CV:
+                  </span>
+                  <span className="avatar-size-value">
+                    {personalInfo.avatarSize || 80}px
+                  </span>
+                </div>
+
+                <div className="avatar-size-controls-row">
+                  {/* Botones de tamaño rápido */}
+                  <div className="avatar-size-presets">
+                    {[
+                      { label: 'S', size: 60, title: 'Pequeña (60px)' },
+                      { label: 'M', size: 80, title: 'Normal (80px)' },
+                      { label: 'L', size: 100, title: 'Grande (100px)' },
+                      { label: 'XL', size: 120, title: 'Extra Grande (120px)' }
+                    ].map(preset => {
+                      const currentSize = personalInfo.avatarSize || 80
+                      const isActive = currentSize === preset.size
+                      return (
+                        <button
+                          key={preset.size}
+                          type="button"
+                          className={`btn-avatar-size-chip ${isActive ? 'active' : ''}`}
+                          onClick={() => handleChange('avatarSize', preset.size)}
+                          title={preset.title}
+                        >
+                          {preset.label}
+                        </button>
+                      )
+                    })}
+                  </div>
+
+                  {/* Deslizador continuo milimétrico */}
+                  <input
+                    type="range"
+                    min="50"
+                    max="130"
+                    step="2"
+                    value={personalInfo.avatarSize || 80}
+                    onChange={(e) => handleChange('avatarSize', parseInt(e.target.value, 10))}
+                    className="avatar-size-slider"
+                    title="Desliza para ajustar el tamaño con precisión"
+                  />
+                </div>
+              </div>
+            )}
 
             {/* Nombre y Cargo */}
             <div className="form-row">

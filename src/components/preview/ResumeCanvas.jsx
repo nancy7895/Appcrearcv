@@ -57,6 +57,25 @@ export default function ResumeCanvas({ printRef, customData = null, customScale 
     'Fira Code': "'Fira Code', monospace"
   }[data.fontFamily] || "'Plus Jakarta Sans', sans-serif"
 
+  // Convertir color HEX a RGB para transparencias de fondo
+  const hexToRgb = (hex) => {
+    if (!hex) return '99, 102, 241'
+    const clean = hex.replace(/^#/, '')
+    if (clean.length === 3) {
+      const r = parseInt(clean[0] + clean[0], 16)
+      const g = parseInt(clean[1] + clean[1], 16)
+      const b = parseInt(clean[2] + clean[2], 16)
+      return `${r}, ${g}, ${b}`
+    }
+    if (clean.length === 6) {
+      const r = parseInt(clean.substring(0, 2), 16)
+      const g = parseInt(clean.substring(2, 4), 16)
+      const b = parseInt(clean.substring(4, 6), 16)
+      return `${r}, ${g}, ${b}`
+    }
+    return '99, 102, 241'
+  }
+
   return (
     // 'resume-paper-wrapper' aplica la escala de zoom usando CSS transform: scale(...)
     <div
@@ -74,6 +93,7 @@ export default function ResumeCanvas({ printRef, customData = null, customScale 
         style={{
           fontFamily: fontFamilyStyle,
           '--cv-accent': data.accentColor || '#6366f1', // Variable CSS para el color de acento
+          '--cv-accent-rgb': hexToRgb(data.accentColor || '#6366f1'), // Variable RGB para transparencias
           '--cv-avatar-size': `${data.personalInfo?.avatarSize || 80}px`
         }}
       >

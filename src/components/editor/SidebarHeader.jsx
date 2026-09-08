@@ -1,9 +1,18 @@
 import React from 'react'
-import { Check, Sparkles, Copy, Trash2 } from 'lucide-react'
+import { Save, RotateCcw, Sparkles, Copy, Trash2, Check } from 'lucide-react'
 import { useResume } from '../../context/ResumeContext'
 
 export default function SidebarHeader() {
-  const { activeResume, updateActiveResume, duplicateResume, deleteResume, loadSample } = useResume()
+  const { 
+    activeResume, 
+    updateActiveResume, 
+    saveCurrentResume, 
+    discardChanges, 
+    hasUnsavedChanges, 
+    duplicateResume, 
+    deleteResume, 
+    loadSample 
+  } = useResume()
 
   const handleTitleChange = (e) => {
     updateActiveResume({ title: e.target.value })
@@ -19,12 +28,37 @@ export default function SidebarHeader() {
           onChange={handleTitleChange}
           placeholder="Nombre del documento..."
         />
-        <div className="cv-status-badge">
-          <span className="cv-status-dot" /> Guardado automáticamente
+        <div className={`cv-status-badge ${hasUnsavedChanges ? 'warning' : 'success'}`}>
+          <span className={`cv-status-dot ${hasUnsavedChanges ? 'warning' : 'success'}`} />
+          {hasUnsavedChanges ? 'Cambios sin guardar' : 'Guardado'}
         </div>
       </div>
 
       <div className="sidebar-header-actions">
+        {/* Botón 1: Guardar / Actualizar */}
+        <button
+          type="button"
+          className={`btn btn-sm ${hasUnsavedChanges ? 'btn-primary' : 'btn-secondary'}`}
+          onClick={saveCurrentResume}
+          title={hasUnsavedChanges ? 'Guardar los datos editados' : 'Guardar estado actual'}
+        >
+          <Save size={14} />
+          <span>{hasUnsavedChanges ? 'Actualizar' : 'Guardar'}</span>
+        </button>
+
+        {/* Botón 2: Descartar (regresar a como estaba antes si no se desea actualizar) */}
+        {hasUnsavedChanges && (
+          <button
+            type="button"
+            className="btn btn-secondary btn-sm btn-discard"
+            onClick={discardChanges}
+            title="Descartar cambios y regresar a como estaba antes"
+          >
+            <RotateCcw size={13} />
+            <span>Descartar</span>
+          </button>
+        )}
+
         <div className="dropdown-container" style={{ position: 'relative' }}>
           <button
             className="btn btn-secondary btn-sm"

@@ -80,6 +80,15 @@
   gap: 5px;
   padding-left: 6px;
   font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.cv-status-badge.warning {
+  color: var(--accent-amber);
+}
+
+.cv-status-badge.success {
+  color: var(--accent-emerald);
 }
 
 .cv-status-dot {
@@ -88,6 +97,28 @@
   border-radius: 50%;
   background: var(--accent-emerald);
   box-shadow: 0 0 6px var(--accent-emerald);
+  transition: all var(--transition-fast);
+}
+
+.cv-status-dot.warning {
+  background: var(--accent-amber);
+  box-shadow: 0 0 6px var(--accent-amber);
+}
+
+.cv-status-dot.success {
+  background: var(--accent-emerald);
+  box-shadow: 0 0 6px var(--accent-emerald);
+}
+
+.btn-discard {
+  color: var(--accent-rose);
+  border-color: rgba(244, 63, 94, 0.35);
+}
+
+.btn-discard:hover {
+  background: rgba(244, 63, 94, 0.15);
+  border-color: var(--accent-rose);
+  color: var(--accent-rose);
 }
 
 .sidebar-header-actions {

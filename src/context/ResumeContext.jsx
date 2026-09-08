@@ -58,6 +58,14 @@ export function ResumeProvider({ children }) {
   // 'toasts': Lista de notificaciones flotantes (mensajes verdes/azules que aparecen y desaparecen)
   const [toasts, setToasts] = useState([])
 
+  // 'hasUnsavedChanges': Indica si el usuario ha editado algo que aún no ha guardado permanentemente
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
+
+  // 'savedSnapshot': Copia de seguridad del último estado guardado y confirmado
+  const [savedSnapshot, setSavedSnapshot] = useState(() => {
+    return JSON.parse(JSON.stringify(resumes))
+  })
+
   // ---------------------------------------------------------------------------
   // EFECTOS (Sincronización con Backend C# y LocalStorage)
   // ---------------------------------------------------------------------------
@@ -68,35 +76,20 @@ export function ResumeProvider({ children }) {
       const serverResumes = await getResumesFromApi()
       if (serverResumes && Array.isArray(serverResumes) && serverResumes.length > 0) {
         setResumes(serverResumes)
+        setSavedSnapshot(JSON.parse(JSON.stringify(serverResumes)))
         setActiveResumeId(serverResumes[0].id)
       }
     }
     loadFromBackend()
   }, [])
 
-  // 2. Guardado automático en LocalStorage
-  useEffect(() => {
-    try {
-      localStorage.setItem('auracv_resumes', JSON.stringify(resumes))
-    } catch (e) {
-      console.error('Error guardando en localStorage:', e)
-    }
-  }, [resumes])
-
-  // 3. Guarda en memoria cuál fue el último CV que estuviste editando
+  // 2. Guarda en memoria cuál fue el último CV que estuviste editando
   useEffect(() => {
     localStorage.setItem('auracv_active_id', activeResumeId)
   }, [activeResumeId])
 
   // Obtenemos el objeto del CV actual que está siendo editado
   const activeResume = resumes.find(r => r.id === activeResumeId) || resumes[0] || defaultResumeData
-
-  // 4. Cada vez que el CV activo cambia, lo guardamos en segundo plano en el Backend C#
-  useEffect(() => {
-    if (activeResume) {
-      saveResumeToApi(activeResume)
-    }
-  }, [activeResume])
 
   // ---------------------------------------------------------------------------
   // FUNCIONES AUXILIARES Y ACCIONES
@@ -112,7 +105,7 @@ export function ResumeProvider({ children }) {
     }, 3200)
   }
 
-  // Actualiza cualquier campo del CV activo (ej: nombre, foto, experiencia)
+  // Actualiza cualquier campo del CV activo (ej: nombre, foto, experiencia) en el borrador en vivo
   const updateActiveResume = (updater) => {
     setResumes(prev =>
       prev.map(r => {
@@ -126,6 +119,39 @@ export function ResumeProvider({ children }) {
         return r
       })
     )
+    setHasUnsavedChanges(true)
+  }
+
+  // 1. FUNCIÓN GUARDAR / ACTUALIZAR: Solo cuando el usuario hace clic en el botón
+  const saveCurrentResume = async () => {
+    try {
+      // Guardamos en LocalStorage
+      localStorage.setItem('auracv_resumes', JSON.stringify(resumes))
+
+      // Guardamos en el backend si está activo
+      if (activeResume) {
+        await saveResumeToApi(activeResume)
+      }
+
+      // Actualizamos la copia confirmada de seguridad
+      setSavedSnapshot(JSON.parse(JSON.stringify(resumes)))
+      setHasUnsavedChanges(false)
+
+      // Mensaje de éxito
+      addToast('¡Se guardaron exitosamente tus datos!', 'success')
+    } catch (error) {
+      console.error('Error al guardar datos:', error)
+      addToast('Hubo un error al guardar los datos', 'error')
+    }
+  }
+
+  // 2. FUNCIÓN DESCARTAR / REGRESAR A COMO ESTABA ANTES
+  const discardChanges = () => {
+    if (hasUnsavedChanges) {
+      setResumes(JSON.parse(JSON.stringify(savedSnapshot)))
+      setHasUnsavedChanges(false)
+      addToast('Cambios descartados. Se restauró la versión anterior.', 'info')
+    }
   }
 
   // Crear un nuevo currículum desde cero
@@ -265,6 +291,9 @@ export function ResumeProvider({ children }) {
         toasts,
         addToast,
         updateActiveResume,
+        saveCurrentResume,
+        discardChanges,
+        hasUnsavedChanges,
         createNewResume,
         duplicateResume,
         deleteResume,

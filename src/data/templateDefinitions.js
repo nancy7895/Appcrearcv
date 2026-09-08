@@ -130,11 +130,22 @@ export const QUICK_COLORS = [
 ]
 
 export const FONT_OPTIONS = [
+  // Sans-Serif Modernas y ATS Friendly
   { id: 'Plus Jakarta Sans', label: 'Plus Jakarta Sans (Modern)' },
-  { id: 'Inter', label: 'Inter (Clean / ATS)' },
-  { id: 'Outfit', label: 'Outfit (Geometric)' },
+  { id: 'Inter', label: 'Inter (Clean / ATS 100%)' },
+  { id: 'Poppins', label: 'Poppins (Geométrica / Creativa)' },
+  { id: 'Montserrat', label: 'Montserrat (Elegante / Títulos)' },
+  { id: 'Roboto', label: 'Roboto (Estándar Global)' },
+  { id: 'Lato', label: 'Lato (Equilibrada / Corporativa)' },
+  { id: 'Outfit', label: 'Outfit (Vanguardista)' },
+
+  // Serif Clásicas y Ejecutivas
   { id: 'Playfair Display', label: 'Playfair Display (Executive)' },
-  { id: 'Fira Code', label: 'Fira Code (Technical)' }
+  { id: 'Lora', label: 'Lora (Editorial Contemporánea)' },
+  { id: 'Merriweather', label: 'Merriweather (Académica / Formal)' },
+
+  // Monospace / Técnicas
+  { id: 'Fira Code', label: 'Fira Code (Technical / Developers)' }
 ]
 
 export const DENSITY_OPTIONS = [

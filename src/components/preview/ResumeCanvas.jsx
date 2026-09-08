@@ -46,8 +46,14 @@ export default function ResumeCanvas({ printRef, customData = null, customScale 
   const fontFamilyStyle = {
     'Plus Jakarta Sans': "'Plus Jakarta Sans', sans-serif",
     'Inter': "'Inter', sans-serif",
+    'Poppins': "'Poppins', sans-serif",
+    'Montserrat': "'Montserrat', sans-serif",
+    'Roboto': "'Roboto', sans-serif",
+    'Lato': "'Lato', sans-serif",
     'Outfit': "'Outfit', sans-serif",
     'Playfair Display': "'Playfair Display', serif",
+    'Lora': "'Lora', serif",
+    'Merriweather': "'Merriweather', serif",
     'Fira Code': "'Fira Code', monospace"
   }[data.fontFamily] || "'Plus Jakarta Sans', sans-serif"
 

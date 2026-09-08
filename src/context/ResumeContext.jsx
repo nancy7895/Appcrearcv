@@ -61,6 +61,9 @@ export function ResumeProvider({ children }) {
   // 'hasUnsavedChanges': Indica si el usuario ha editado algo que aún no ha guardado permanentemente
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
 
+  // 'isCreatingNew': Indica si el usuario está creando un CV nuevo (Modo Guardar) o editando uno existente (Modo Actualizar)
+  const [isCreatingNew, setIsCreatingNew] = useState(false)
+
   // 'savedSnapshot': Copia de seguridad del último estado guardado y confirmado
   const [savedSnapshot, setSavedSnapshot] = useState(() => {
     return JSON.parse(JSON.stringify(resumes))
@@ -122,7 +125,7 @@ export function ResumeProvider({ children }) {
     setHasUnsavedChanges(true)
   }
 
-  // 1. FUNCIÓN GUARDAR / ACTUALIZAR: Solo cuando el usuario hace clic en el botón
+  // 1. FUNCIÓN GUARDAR (Nuevo CV) / ACTUALIZAR (CV Existente)
   const saveCurrentResume = async () => {
     try {
       // Guardamos en LocalStorage
@@ -137,8 +140,12 @@ export function ResumeProvider({ children }) {
       setSavedSnapshot(JSON.parse(JSON.stringify(resumes)))
       setHasUnsavedChanges(false)
 
-      // Mensaje de éxito
-      addToast('¡Se guardaron exitosamente tus datos!', 'success')
+      if (isCreatingNew) {
+        setIsCreatingNew(false)
+        addToast('¡Se guardaron exitosamente tus datos!', 'success')
+      } else {
+        addToast('¡Se actualizaron exitosamente tus datos!', 'success')
+      }
     } catch (error) {
       console.error('Error al guardar datos:', error)
       addToast('Hubo un error al guardar los datos', 'error')
@@ -147,14 +154,23 @@ export function ResumeProvider({ children }) {
 
   // 2. FUNCIÓN DESCARTAR / REGRESAR A COMO ESTABA ANTES
   const discardChanges = () => {
-    if (hasUnsavedChanges) {
+    if (isCreatingNew) {
+      // Si estaba creando un nuevo CV y cancela, eliminamos el borrador no guardado
+      const previousResumes = JSON.parse(JSON.stringify(savedSnapshot))
+      setResumes(previousResumes)
+      setActiveResumeId(previousResumes[0]?.id || 'cv-default-1')
+      setIsCreatingNew(false)
+      setHasUnsavedChanges(false)
+      addToast('Creación de nuevo currículum cancelada.', 'info')
+    } else if (hasUnsavedChanges) {
+      // Si estaba editando, restauramos los datos previos a la edición
       setResumes(JSON.parse(JSON.stringify(savedSnapshot)))
       setHasUnsavedChanges(false)
       addToast('Cambios descartados. Se restauró la versión anterior.', 'info')
     }
   }
 
-  // Crear un nuevo currículum desde cero
+  // Crear un nuevo currículum desde cero (Activa el Modo Nuevo CV / Guardar)
   const createNewResume = (templateId = 'modern-aura') => {
     const newId = 'cv-' + Date.now()
     const newResume = {
@@ -172,8 +188,9 @@ export function ResumeProvider({ children }) {
     }
     setResumes(prev => [newResume, ...prev])
     setActiveResumeId(newId)
+    setIsCreatingNew(true) // 👈 Activamos el modo 'Crear Nuevo CV' (Mostrará botón GUARDAR)
+    setHasUnsavedChanges(true)
     setActiveTab('editor')
-    addToast('¡Nuevo currículum creado con éxito!', 'success')
   }
 
   // Duplicar un currículum existente
@@ -294,6 +311,8 @@ export function ResumeProvider({ children }) {
         saveCurrentResume,
         discardChanges,
         hasUnsavedChanges,
+        isCreatingNew,
+        setIsCreatingNew,
         createNewResume,
         duplicateResume,
         deleteResume,

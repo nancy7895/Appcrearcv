@@ -4,11 +4,12 @@ import { useResume } from '../../context/ResumeContext'
 import ResumeCanvas from '../preview/ResumeCanvas'
 
 export default function DocumentCard({ resume }) {
-  const { activeResumeId, setActiveResumeId, setActiveTab, duplicateResume, deleteResume, addToast } = useResume()
+  const { activeResumeId, setActiveResumeId, setActiveTab, duplicateResume, deleteResume, setIsCreatingNew, addToast } = useResume()
   const isActive = resume.id === activeResumeId
 
   const handleEdit = () => {
     setActiveResumeId(resume.id)
+    setIsCreatingNew(false) // 👈 Modo Editar (mostrará botón Actualizar)
     setActiveTab('editor')
   }
 

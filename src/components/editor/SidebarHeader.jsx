@@ -1,5 +1,5 @@
 import React from 'react'
-import { Save, RotateCcw, Sparkles, Copy, Trash2, Check } from 'lucide-react'
+import { Save, RotateCcw, Sparkles, Copy, Trash2, Check, PlusCircle } from 'lucide-react'
 import { useResume } from '../../context/ResumeContext'
 
 export default function SidebarHeader() {
@@ -9,6 +9,7 @@ export default function SidebarHeader() {
     saveCurrentResume, 
     discardChanges, 
     hasUnsavedChanges, 
+    isCreatingNew,
     duplicateResume, 
     deleteResume, 
     loadSample 
@@ -28,35 +29,63 @@ export default function SidebarHeader() {
           onChange={handleTitleChange}
           placeholder="Nombre del documento..."
         />
-        <div className={`cv-status-badge ${hasUnsavedChanges ? 'warning' : 'success'}`}>
-          <span className={`cv-status-dot ${hasUnsavedChanges ? 'warning' : 'success'}`} />
-          {hasUnsavedChanges ? 'Cambios sin guardar' : 'Guardado'}
+        <div className={`cv-status-badge ${isCreatingNew ? 'warning' : (hasUnsavedChanges ? 'warning' : 'success')}`}>
+          <span className={`cv-status-dot ${isCreatingNew ? 'warning' : (hasUnsavedChanges ? 'warning' : 'success')}`} />
+          {isCreatingNew 
+            ? 'Nuevo CV (Sin guardar)' 
+            : (hasUnsavedChanges ? 'Cambios sin guardar' : 'Guardado')}
         </div>
       </div>
 
       <div className="sidebar-header-actions">
-        {/* Botón 1: Guardar / Actualizar */}
-        <button
-          type="button"
-          className={`btn btn-sm ${hasUnsavedChanges ? 'btn-primary' : 'btn-secondary'}`}
-          onClick={saveCurrentResume}
-          title={hasUnsavedChanges ? 'Guardar los datos editados' : 'Guardar estado actual'}
-        >
-          <Save size={14} />
-          <span>{hasUnsavedChanges ? 'Actualizar' : 'Guardar'}</span>
-        </button>
+        {/* MODO 1: Creando un Nuevo CV -> Botón "Guardar" */}
+        {isCreatingNew ? (
+          <>
+            <button
+              type="button"
+              className="btn btn-sm btn-primary"
+              onClick={saveCurrentResume}
+              title="Guardar este nuevo currículum"
+            >
+              <Save size={14} />
+              <span>Guardar</span>
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm btn-discard"
+              onClick={discardChanges}
+              title="Cancelar creación y no guardar"
+            >
+              <RotateCcw size={13} />
+              <span>Cancelar</span>
+            </button>
+          </>
+        ) : (
+          /* MODO 2: Editando un CV existente -> Botón "Actualizar" */
+          <>
+            <button
+              type="button"
+              className={`btn btn-sm ${hasUnsavedChanges ? 'btn-primary' : 'btn-secondary'}`}
+              onClick={saveCurrentResume}
+              title={hasUnsavedChanges ? 'Guardar los datos editados' : 'Sin cambios pendientes'}
+              disabled={!hasUnsavedChanges}
+            >
+              <Save size={14} />
+              <span>Actualizar</span>
+            </button>
 
-        {/* Botón 2: Descartar (regresar a como estaba antes si no se desea actualizar) */}
-        {hasUnsavedChanges && (
-          <button
-            type="button"
-            className="btn btn-secondary btn-sm btn-discard"
-            onClick={discardChanges}
-            title="Descartar cambios y regresar a como estaba antes"
-          >
-            <RotateCcw size={13} />
-            <span>Descartar</span>
-          </button>
+            {hasUnsavedChanges && (
+              <button
+                type="button"
+                className="btn btn-secondary btn-sm btn-discard"
+                onClick={discardChanges}
+                title="Descartar cambios y regresar a como estaba antes"
+              >
+                <RotateCcw size={13} />
+                <span>Descartar</span>
+              </button>
+            )}
+          </>
         )}
 
         <div className="dropdown-container" style={{ position: 'relative' }}>

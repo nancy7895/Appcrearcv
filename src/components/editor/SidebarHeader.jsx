@@ -1,16 +1,13 @@
 import React from 'react'
-import { Save, RotateCcw, Sparkles, Copy, Trash2, Check, PlusCircle } from 'lucide-react'
+import { Sparkles, Copy, Trash2 } from 'lucide-react'
 import { useResume } from '../../context/ResumeContext'
 
 export default function SidebarHeader() {
   const { 
     activeResume, 
     updateActiveResume, 
-    saveCurrentResume, 
-    discardChanges, 
     hasUnsavedChanges, 
     isCreatingNew,
-    isSaving,
     duplicateResume, 
     deleteResume, 
     loadSample 
@@ -39,59 +36,6 @@ export default function SidebarHeader() {
       </div>
 
       <div className="sidebar-header-actions">
-        {/* MODO 1: Creando un Nuevo CV -> Botón "Guardar" */}
-        {isCreatingNew ? (
-          <>
-            <button
-              type="button"
-              className="btn btn-sm btn-primary"
-              onClick={saveCurrentResume}
-              disabled={isSaving}
-              title="Guardar este nuevo currículum"
-            >
-              <Save size={14} />
-              <span>{isSaving ? 'Guardando...' : 'Guardar'}</span>
-            </button>
-            <button
-              type="button"
-              className="btn btn-secondary btn-sm btn-discard"
-              onClick={discardChanges}
-              disabled={isSaving}
-              title="Cancelar creación y no guardar"
-            >
-              <RotateCcw size={13} />
-              <span>Cancelar</span>
-            </button>
-          </>
-        ) : (
-          /* MODO 2: Editando un CV existente -> Botón "Actualizar" */
-          <>
-            <button
-              type="button"
-              className={`btn btn-sm ${hasUnsavedChanges ? 'btn-primary' : 'btn-secondary'}`}
-              onClick={saveCurrentResume}
-              title={hasUnsavedChanges ? 'Guardar los datos editados' : 'Sin cambios pendientes'}
-              disabled={!hasUnsavedChanges || isSaving}
-            >
-              <Save size={14} />
-              <span>{isSaving ? 'Guardando...' : 'Actualizar'}</span>
-            </button>
-
-            {hasUnsavedChanges && (
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm btn-discard"
-                onClick={discardChanges}
-                disabled={isSaving}
-                title="Descartar cambios y regresar a como estaba antes"
-              >
-                <RotateCcw size={13} />
-                <span>Descartar</span>
-              </button>
-            )}
-          </>
-        )}
-
         <div className="dropdown-container" style={{ position: 'relative' }}>
           <button
             className="btn btn-secondary btn-sm"

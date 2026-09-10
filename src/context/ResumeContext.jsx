@@ -69,8 +69,16 @@ export function ResumeProvider({ children }) {
     return JSON.parse(JSON.stringify(resumes))
   })
 
+  // 'isSaving': Indica si actualmente se está ejecutando la acción de guardado
+  const [isSaving, setIsSaving] = useState(false)
+
+  // Estados para proteger la navegación si hay cambios sin guardar
+  const [isNavModalOpen, setIsNavModalOpen] = useState(false)
+  const [pendingTab, setPendingTab] = useState(null)
+  const [pendingAction, setPendingAction] = useState(null)
+
   // ---------------------------------------------------------------------------
-  // EFECTOS (Sincronización con Backend C# y LocalStorage)
+  // EFECTOS (Sincronización con Backend C#, LocalStorage y Seguridad de Navegador)
   // ---------------------------------------------------------------------------
 
   // 1. Cargar currículums desde el backend en C# al iniciar la aplicación
@@ -90,6 +98,19 @@ export function ResumeProvider({ children }) {
   useEffect(() => {
     localStorage.setItem('auracv_active_id', activeResumeId)
   }, [activeResumeId])
+
+  // 3. Prevenir pérdida accidental de datos si el usuario intenta recargar o cerrar la pestaña del navegador
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (hasUnsavedChanges || isCreatingNew) {
+        e.preventDefault()
+        e.returnValue = 'Tienes cambios sin guardar en tu currículum. ¿Seguro que deseas salir?'
+        return e.returnValue
+      }
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [hasUnsavedChanges, isCreatingNew])
 
   // Obtenemos el objeto del CV actual que está siendo editado
   const activeResume = resumes.find(r => r.id === activeResumeId) || resumes[0] || defaultResumeData
@@ -127,6 +148,8 @@ export function ResumeProvider({ children }) {
 
   // 1. FUNCIÓN GUARDAR (Nuevo CV) / ACTUALIZAR (CV Existente)
   const saveCurrentResume = async () => {
+    if (isSaving) return
+    setIsSaving(true)
     try {
       // Guardamos en LocalStorage
       localStorage.setItem('auracv_resumes', JSON.stringify(resumes))
@@ -149,6 +172,8 @@ export function ResumeProvider({ children }) {
     } catch (error) {
       console.error('Error al guardar datos:', error)
       addToast('Hubo un error al guardar los datos', 'error')
+    } finally {
+      setIsSaving(false)
     }
   }
 
@@ -168,6 +193,48 @@ export function ResumeProvider({ children }) {
       setHasUnsavedChanges(false)
       addToast('Cambios descartados. Se restauró la versión anterior.', 'info')
     }
+  }
+
+  // 3. NAVEGACIÓN SEGURA ENTRE PESTAÑAS (Protección contra pérdida de datos)
+  const safeNavigateTab = (targetTab) => {
+    if (targetTab === activeTab) return
+    if (hasUnsavedChanges || isCreatingNew) {
+      setPendingTab(targetTab)
+      setIsNavModalOpen(true)
+    } else {
+      setActiveTab(targetTab)
+    }
+  }
+
+  // Confirmar navegación: Guardar y salir
+  const confirmNavigationAndSave = async () => {
+    await saveCurrentResume()
+    const target = pendingTab
+    const action = pendingAction
+    setIsNavModalOpen(false)
+    setPendingTab(null)
+    setPendingAction(null)
+    if (target) setActiveTab(target)
+    if (typeof action === 'function') action()
+  }
+
+  // Confirmar navegación: Descartar y salir
+  const confirmNavigationAndDiscard = () => {
+    discardChanges()
+    const target = pendingTab
+    const action = pendingAction
+    setIsNavModalOpen(false)
+    setPendingTab(null)
+    setPendingAction(null)
+    if (target) setActiveTab(target)
+    if (typeof action === 'function') action()
+  }
+
+  // Cancelar navegación: Seguir editando
+  const cancelNavigation = () => {
+    setIsNavModalOpen(false)
+    setPendingTab(null)
+    setPendingAction(null)
   }
 
   // Crear un nuevo currículum desde cero (Activa el Modo Nuevo CV / Guardar)
@@ -313,6 +380,13 @@ export function ResumeProvider({ children }) {
         hasUnsavedChanges,
         isCreatingNew,
         setIsCreatingNew,
+        isSaving,
+        isNavModalOpen,
+        pendingTab,
+        safeNavigateTab,
+        confirmNavigationAndSave,
+        confirmNavigationAndDiscard,
+        cancelNavigation,
         createNewResume,
         duplicateResume,
         deleteResume,

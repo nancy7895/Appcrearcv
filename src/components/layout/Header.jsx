@@ -13,15 +13,15 @@ import { useResume } from '../../context/ResumeContext'
 import { useTheme } from '../../context/ThemeContext'
 
 export default function Header() {
-  // Extraemos la pestaña activa y la función para crear CVs desde la memoria global
-  const { activeTab, setActiveTab, createNewResume } = useResume()
+  // Extraemos la pestaña activa, navegación segura y la función para crear CVs
+  const { activeTab, safeNavigateTab, createNewResume } = useResume()
   // Extraemos el tema actual y la función para alternarlo
   const { theme, toggleTheme } = useTheme()
 
   return (
     <header className="app-header">
       {/* 1. Logotipo: Al hacer clic nos lleva de vuelta a la vista de edición */}
-      <button className="brand-container" onClick={() => setActiveTab('editor')}>
+      <button className="brand-container" onClick={() => safeNavigateTab('editor')}>
         <div className="brand-icon">
           <Sparkles size={22} />
         </div>
@@ -34,7 +34,7 @@ export default function Header() {
         {/* Pestaña: Editor */}
         <button
           className={`nav-tab-btn ${activeTab === 'editor' ? 'active' : ''}`}
-          onClick={() => setActiveTab('editor')}
+          onClick={() => safeNavigateTab('editor')}
         >
           <Edit3 size={16} />
           <span>Editor de CV</span>
@@ -43,7 +43,7 @@ export default function Header() {
         {/* Pestaña: Galería de Plantillas */}
         <button
           className={`nav-tab-btn ${activeTab === 'templates' ? 'active' : ''}`}
-          onClick={() => setActiveTab('templates')}
+          onClick={() => safeNavigateTab('templates')}
         >
           <LayoutTemplate size={16} />
           <span>Plantillas</span>
@@ -52,7 +52,7 @@ export default function Header() {
         {/* Pestaña: Dashboard / Mis Documentos */}
         <button
           className={`nav-tab-btn ${activeTab === 'dashboard' ? 'active' : ''}`}
-          onClick={() => setActiveTab('dashboard')}
+          onClick={() => safeNavigateTab('dashboard')}
         >
           <FolderOpen size={16} />
           <span>Mis Documentos</span>

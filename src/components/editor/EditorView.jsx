@@ -7,8 +7,9 @@
 // 2. Columna Derecha (<main>): Hoja en tiempo real (Canvas) y barra de herramientas
 //    para descargar el PDF, cambiar colores y hacer zoom.
 
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { ChevronsDown, ChevronsUp } from 'lucide-react'
+import { useResume } from '../../context/ResumeContext'
 
 // Sub-componentes del editor:
 import SidebarHeader from './SidebarHeader'
@@ -16,6 +17,7 @@ import SectionNav from './SectionNav'
 import AtsScoreMeter from './AtsScoreMeter'
 import CanvasToolbar from './CanvasToolbar'
 import ResumeCanvas from '../preview/ResumeCanvas'
+import FloatingSaveBar from './FloatingSaveBar'
 
 // Componentes de cada sección del formulario:
 import PersonalInfoSection from './sections/PersonalInfoSection'
@@ -29,6 +31,24 @@ import CustomSection from './sections/CustomSection'
 
 export default function EditorView() {
   const printRef = useRef(null)
+  const { saveCurrentResume, hasUnsavedChanges, isCreatingNew } = useResume()
+
+  // ---------------------------------------------------------------------------
+  // ATAJO DE TECLADO GLOBAL (Ctrl + S / Cmd + S)
+  // Guarda o actualiza el CV directamente sin abrir el diálogo nativo del navegador
+  // ---------------------------------------------------------------------------
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+        e.preventDefault()
+        if (hasUnsavedChanges || isCreatingNew) {
+          saveCurrentResume()
+        }
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [hasUnsavedChanges, isCreatingNew, saveCurrentResume])
 
   // 'activeSection': Guarda qué pestaña de navegación rápida está seleccionada
   const [activeSection, setActiveSection] = useState('personal')
@@ -170,6 +190,9 @@ export default function EditorView() {
             onToggle={() => toggleSection('custom')}
           />
         </div>
+
+        {/* Barra Flotante inferior que aparece al tener cambios pendientes */}
+        <FloatingSaveBar />
       </aside>
 
       {/* =================================================================== */}

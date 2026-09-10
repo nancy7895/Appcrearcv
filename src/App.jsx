@@ -20,6 +20,7 @@ import { ResumeProvider, useResume } from './context/ResumeContext'
 // Importamos las piezas visuales (Componentes):
 import Header from './components/layout/Header'
 import Toast from './components/layout/Toast'
+import UnsavedChangesModal from './components/common/UnsavedChangesModal'
 import EditorView from './components/editor/EditorView'
 import TemplatesView from './components/templates/TemplatesView'
 import DashboardView from './components/dashboard/DashboardView'
@@ -51,6 +52,9 @@ function AppContent() {
         {/* Si activeTab es 'dashboard', muestra la lista de currículums guardados */}
         {activeTab === 'dashboard' && <DashboardView />}
       </main>
+
+      {/* Modal global de cambios sin guardar al navegar */}
+      <UnsavedChangesModal />
 
       {/* Mensajes flotantes de confirmación (ej: "¡Guardado con éxito!") */}
       <Toast />

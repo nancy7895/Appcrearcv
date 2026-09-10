@@ -10,6 +10,7 @@ export default function SidebarHeader() {
     discardChanges, 
     hasUnsavedChanges, 
     isCreatingNew,
+    isSaving,
     duplicateResume, 
     deleteResume, 
     loadSample 
@@ -45,15 +46,17 @@ export default function SidebarHeader() {
               type="button"
               className="btn btn-sm btn-primary"
               onClick={saveCurrentResume}
+              disabled={isSaving}
               title="Guardar este nuevo currículum"
             >
               <Save size={14} />
-              <span>Guardar</span>
+              <span>{isSaving ? 'Guardando...' : 'Guardar'}</span>
             </button>
             <button
               type="button"
               className="btn btn-secondary btn-sm btn-discard"
               onClick={discardChanges}
+              disabled={isSaving}
               title="Cancelar creación y no guardar"
             >
               <RotateCcw size={13} />
@@ -68,10 +71,10 @@ export default function SidebarHeader() {
               className={`btn btn-sm ${hasUnsavedChanges ? 'btn-primary' : 'btn-secondary'}`}
               onClick={saveCurrentResume}
               title={hasUnsavedChanges ? 'Guardar los datos editados' : 'Sin cambios pendientes'}
-              disabled={!hasUnsavedChanges}
+              disabled={!hasUnsavedChanges || isSaving}
             >
               <Save size={14} />
-              <span>Actualizar</span>
+              <span>{isSaving ? 'Guardando...' : 'Actualizar'}</span>
             </button>
 
             {hasUnsavedChanges && (
@@ -79,6 +82,7 @@ export default function SidebarHeader() {
                 type="button"
                 className="btn btn-secondary btn-sm btn-discard"
                 onClick={discardChanges}
+                disabled={isSaving}
                 title="Descartar cambios y regresar a como estaba antes"
               >
                 <RotateCcw size={13} />

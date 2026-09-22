@@ -1,118 +1,69 @@
 namespace AppCv.Server.Services;
 
-using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
+using AppCv.Server.Data;
 using AppCv.Server.Models;
 
 public class ResumeService : IResumeService
 {
-    private readonly string _filePath;
-    private readonly JsonSerializerOptions _jsonOptions;
-    private static readonly SemaphoreSlim _lock = new SemaphoreSlim(1, 1);
+    private readonly AppDbContext _context;
 
-    public ResumeService(IWebHostEnvironment env)
+    public ResumeService(AppDbContext context)
     {
-        var dataFolder = Path.Combine(env.ContentRootPath, "Data");
-        if (!Directory.Exists(dataFolder))
-        {
-            Directory.CreateDirectory(dataFolder);
-        }
-
-        _filePath = Path.Combine(dataFolder, "resumes.json");
-
-        _jsonOptions = new JsonSerializerOptions
-        {
-            WriteIndented = true,
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-        };
+        _context = context;
     }
 
     public async Task<List<Resume>> GetAllAsync()
     {
-        await _lock.WaitAsync();
-        try
+        var list = await _context.Resumes.AsNoTracking().ToListAsync();
+        if (!list.Any())
         {
-            if (!File.Exists(_filePath))
-            {
-                var initialList = new List<Resume> { new Resume() };
-                var json = JsonSerializer.Serialize(initialList, _jsonOptions);
-                await File.WriteAllTextAsync(_filePath, json);
-                return initialList;
-            }
-
-            var content = await File.ReadAllTextAsync(_filePath);
-            var resumes = JsonSerializer.Deserialize<List<Resume>>(content, _jsonOptions);
-            return resumes ?? new List<Resume>();
+            var defaultResume = new Resume();
+            _context.Resumes.Add(defaultResume);
+            await _context.SaveChangesAsync();
+            return new List<Resume> { defaultResume };
         }
-        finally
-        {
-            _lock.Release();
-        }
+        return list;
     }
 
     public async Task<Resume?> GetByIdAsync(string id)
     {
-        var all = await GetAllAsync();
-        return all.FirstOrDefault(r => r.Id == id);
+        return await _context.Resumes.AsNoTracking().FirstOrDefaultAsync(r => r.Id == id);
     }
 
     public async Task<Resume> SaveOrUpdateAsync(Resume resume)
     {
-        await _lock.WaitAsync();
-        try
+        resume.LastModified = DateTime.UtcNow.ToString("o");
+
+        var existing = await _context.Resumes.FirstOrDefaultAsync(r => r.Id == resume.Id);
+
+        if (existing == null)
         {
-            var all = new List<Resume>();
-            if (File.Exists(_filePath))
-            {
-                var content = await File.ReadAllTextAsync(_filePath);
-                all = JsonSerializer.Deserialize<List<Resume>>(content, _jsonOptions) ?? new List<Resume>();
-            }
-
-            resume.LastModified = DateTime.UtcNow.ToString("o");
-
-            var index = all.FindIndex(r => r.Id == resume.Id);
-            if (index >= 0)
-            {
-                all[index] = resume;
-            }
-            else
-            {
-                all.Add(resume);
-            }
-
-            var updatedJson = JsonSerializer.Serialize(all, _jsonOptions);
-            await File.WriteAllTextAsync(_filePath, updatedJson);
-
-            return resume;
+            _context.Resumes.Add(resume);
         }
-        finally
+        else
         {
-            _lock.Release();
+            _context.Entry(existing).CurrentValues.SetValues(resume);
+            existing.PersonalInfo = resume.PersonalInfo;
+            existing.Experience = resume.Experience;
+            existing.Education = resume.Education;
+            existing.Skills = resume.Skills;
+            existing.Languages = resume.Languages;
+            existing.Projects = resume.Projects;
+            existing.Certifications = resume.Certifications;
         }
+
+        await _context.SaveChangesAsync();
+        return resume;
     }
 
     public async Task<bool> DeleteAsync(string id)
     {
-        await _lock.WaitAsync();
-        try
-        {
-            if (!File.Exists(_filePath)) return false;
+        var existing = await _context.Resumes.FirstOrDefaultAsync(r => r.Id == id);
+        if (existing == null) return false;
 
-            var content = await File.ReadAllTextAsync(_filePath);
-            var all = JsonSerializer.Deserialize<List<Resume>>(content, _jsonOptions) ?? new List<Resume>();
-
-            var item = all.FirstOrDefault(r => r.Id == id);
-            if (item == null) return false;
-
-            all.Remove(item);
-
-            var updatedJson = JsonSerializer.Serialize(all, _jsonOptions);
-            await File.WriteAllTextAsync(_filePath, updatedJson);
-
-            return true;
-        }
-        finally
-        {
-            _lock.Release();
-        }
+        _context.Resumes.Remove(existing);
+        await _context.SaveChangesAsync();
+        return true;
     }
 }
